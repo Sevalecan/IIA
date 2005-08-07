@@ -1,122 +1,80 @@
-[Editor_1]
-CursorCol=5
-CursorRow=8
-TopLine=1
-LeftChar=1
-Open=0
-Top=0
-[Editors]
-Focused=-1
-Order=-1
-[Editor_0]
-Open=0
-Top=0
-CursorCol=1
-CursorRow=1
-TopLine=1
-LeftChar=1
-[Editor_2]
-Open=0
-Top=0
-CursorCol=13
-CursorRow=25
-TopLine=1
-LeftChar=1
-[Editor_3]
-Open=1
-Top=0
-CursorCol=26
-CursorRow=67
-TopLine=50
-LeftChar=1
-[Editor_4]
-Open=0
-Top=0
-CursorCol=5
-CursorRow=19
-TopLine=1
-LeftChar=1
-[Editor_5]
-Open=0
-Top=0
-CursorCol=7
-CursorRow=30
-TopLine=1
-LeftChar=1
-[Editor_6]
-Open=0
-Top=0
-CursorCol=5
-CursorRow=34
-TopLine=6
-LeftChar=1
-[Editor_7]
-Open=0
-Top=0
-CursorCol=57
-CursorRow=41
-TopLine=1
-LeftChar=1
-[Editor_8]
-Open=1
-Top=0
-CursorCol=1
-CursorRow=3
-TopLine=23
-LeftChar=1
-[Editor_9]
-Open=0
-Top=0
-CursorCol=20
-CursorRow=25
-TopLine=2
-LeftChar=1
-[Editor_10]
-Open=0
-Top=0
-CursorCol=21
-CursorRow=13
-TopLine=1
-LeftChar=1
-[Editor_11]
-Open=1
-Top=0
-CursorCol=65
-CursorRow=40
-TopLine=20
-LeftChar=1
-[Editor_12]
-CursorCol=63
-CursorRow=15
-TopLine=1
-LeftChar=1
-Open=0
-Top=0
-[Editor_13]
-CursorCol=13
-CursorRow=18
-TopLine=1
-LeftChar=1
-Open=1
-Top=0
-[Editor_14]
-Open=1
-Top=1
-CursorCol=66
-CursorRow=69
-TopLine=45
-LeftChar=1
-[Editor_15]
-Open=1
-Top=0
-CursorCol=29
-CursorRow=38
-TopLine=10
-LeftChar=1
-[Editor_16]
-Open=0
-Top=0
-CursorCol=31
-CursorRow=11
-TopLine=1
-LeftChar=1
+<?xml version="1.0"?>
+<!DOCTYPE Code::Blocks_layout_file>
+<Code::Blocks_layout_file>
+	<File name="include/exceptions/Exception.hpp" open="0" top="0">
+		<Cursor position="212" topLine="0"/>
+	</File>
+	<File name="include/setup.h" open="0" top="0">
+		<Cursor position="333" topLine="0"/>
+	</File>
+	<File name="include/socket/HostEnt.hpp" open="0" top="0">
+		<Cursor position="357" topLine="11"/>
+	</File>
+	<File name="include/socket/InAddr.hpp" open="0" top="0">
+		<Cursor position="169" topLine="0"/>
+	</File>
+	<File name="include/socket/InAddr4.hpp" open="0" top="0">
+		<Cursor position="291" topLine="0"/>
+	</File>
+	<File name="include/socket/InAddr6.hpp" open="0" top="0">
+		<Cursor position="299" topLine="0"/>
+	</File>
+	<File name="include/socket/SockAddr.hpp" open="0" top="0">
+		<Cursor position="1635" topLine="21"/>
+	</File>
+	<File name="include/socket/SockAddrIn.hpp" open="0" top="0">
+		<Cursor position="883" topLine="0"/>
+	</File>
+	<File name="include/socket/SockAddrIn6.hpp" open="0" top="0">
+		<Cursor position="927" topLine="4"/>
+	</File>
+	<File name="include/socket/Socket.hpp" open="0" top="0">
+		<Cursor position="102" topLine="68"/>
+	</File>
+	<File name="src/exceptions/Exception.cpp" open="0" top="0">
+		<Cursor position="11" topLine="0"/>
+	</File>
+	<File name="src/socket/HostEnt.cpp" open="0" top="0">
+		<Cursor position="11" topLine="0"/>
+	</File>
+	<File name="src/socket/SockAddr.cpp" open="0" top="0">
+		<Cursor position="1480" topLine="0"/>
+	</File>
+	<File name="src/socket/SockAddrIn.cpp" open="0" top="0">
+		<Cursor position="1340" topLine="0"/>
+	</File>
+	<File name="src/socket/SockAddrIn6.cpp" open="0" top="0">
+		<Cursor position="11" topLine="0"/>
+	</File>
+	<File name="src/socket/Socket.cpp" open="0" top="0">
+		<Cursor position="11" topLine="0"/>
+	</File>
+	<File name="test/fatest.cpp" open="0" top="0">
+		<Cursor position="97" topLine="0"/>
+	</File>
+	<File name="test/filesend/filesend.cpp" open="1" top="0">
+		<Cursor position="0" topLine="0"/>
+	</File>
+	<File name="test/filesend/filesend.hpp" open="1" top="1">
+		<Cursor position="388" topLine="0"/>
+	</File>
+	<File name="test/filesend/fsprec.h" open="1" top="0">
+		<Cursor position="0" topLine="0"/>
+	</File>
+	<File name="test/socktest.cpp" open="0" top="0">
+		<Cursor position="1749" topLine="27"/>
+	</File>
+	<File name="test/socktest2.cpp" open="0" top="0">
+		<Cursor position="1746" topLine="73"/>
+	</File>
+	<File name="test/socktest3.cpp" open="0" top="0">
+		<Cursor position="1581" topLine="137"/>
+	</File>
+	<Expand folder="/Sources/test/filesend"/>
+	<Expand folder="/Sources/test"/>
+	<Expand folder="/Sources"/>
+	<Expand folder="/Headers/include"/>
+	<Expand folder="/Headers/test/filesend"/>
+	<Expand folder="/Headers/test"/>
+	<Expand folder="/Headers"/>
+</Code::Blocks_layout_file>

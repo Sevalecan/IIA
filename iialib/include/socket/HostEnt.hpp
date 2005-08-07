@@ -1,6 +1,7 @@
 #ifndef HOSTENT_HPP
 #define HOSTENT_HPP
 
+#include <setup.h>
 #include <stdint.h>
 #include <vector>
 #include <string>
@@ -21,7 +22,7 @@ namespace IIALib
     namespace Socket
     {
         
-        class HostEnt
+        class IIAEXPORT HostEnt
         {
             public:
                 
@@ -30,6 +31,7 @@ namespace IIALib
                     public:
                         uint8_t iData[16];
                 };    
+                
                 
                 std::string              hName;
                 std::vector<std::string> hAliases;

@@ -1,3 +1,4 @@
+#define IIASOURCE
 #include "socket/HostEnt.hpp"
 
 namespace IIALib
@@ -21,7 +22,7 @@ namespace IIALib
             hLength = hRet->h_length;
             
             for (iLen=0;hRet->h_addr_list[iLen];iLen++);
-            hAddrList.resize(iLen);
+                hAddrList.resize(iLen);
             
             for (iPos=0;iPos<iLen;iPos++)
                 memcpy(hAddrList[iPos].iData, hRet->h_addr_list[iPos], hLength);

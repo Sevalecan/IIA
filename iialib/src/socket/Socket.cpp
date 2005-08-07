@@ -1,40 +1,69 @@
+#define IIASOURCE
 #include "socket/Socket.hpp"
+
+
+using namespace IIALib::Exceptions;
 
 namespace IIALib
 {
     
     namespace Socket
     {
+        #ifdef WINDOWS
+        WSADATA Socket::wsaData;
+        WORD    Socket::wsaWord;
+        #endif
+        
+        void Socket::Init()
+        {
+            #ifdef WINDOWS
+            wsaWord = MAKEWORD(1,1);   
+            WSAStartup(wsaWord, &wsaData);
+            #endif
+        }
+            
+        void Socket::Fini()
+        {
+            #ifdef WINDOWS
+            WSACleanup();
+            #endif
+        }    
         
         Socket::Socket()
         {
-            flags = 0;
+            iFlags = 0;
+            pRemoteSA = (sockaddr *)new uint8_t[30];
+            iSASize = 0;
         }    
         
         Socket::Socket(int iNameSpace, int iStyle, int iProtocol)
         {
-            flags = 0;
-            Create(iNameSpace, iStyle, iProtocol);
+            int32_t iRet;
+            
+            iFlags = 0;
+            pRemoteSA = (sockaddr *)new uint8_t[30];
+            iSASize = 0;
+            
+            iRet = Create(iNameSpace, iStyle, iProtocol);
         }    
         
         Socket::~Socket()
         {
             Close();
+            delete [] (uint8_t *)pRemoteSA;
         }    
         
-        void Socket::Create(int iNameSpace, int iStyle, int iProtocol)
+        int32_t Socket::Create(int iNameSpace, int iStyle, int iProtocol)
         {
-            int32_t iRet;
-            if (!(flags & FL_EXISTS))
+            if ((iFlags & FL_EXISTS))
                 Close();
             
             sSocket = ::socket(iNameSpace, iStyle, iProtocol);
-            if ((int32_t)sSocket <= 0) {
-                iRet = sSocket;
-                sSocket = 0;
-                throw Exception("Invalid socket descriptor.", E_INVALID, E_MEDIUM);
-            }    
-            flags |= FL_EXISTS;
+            
+            if ((int32_t)sSocket == -1)
+                return -1;
+            
+            iFlags |= FL_EXISTS;
         }    
         
         void Socket::Close()
@@ -43,12 +72,12 @@ namespace IIALib
             {
                 #ifdef UNIX
                 ::close(sSocket);
-                #elseif WINDOWS
+                #elif WINDOWS
                 ::closesocket(sSocket);
                 #endif
             }    
             
-            flags &= ~FL_EXISTS;
+            iFlags &= ~FL_EXISTS;
             sSocket = 0;
         }    
         
@@ -58,67 +87,159 @@ namespace IIALib
                 ::shutdown(sSocket, iHow);
         }    
         
-        void Socket::Connect(SockAddr *pSockAddr)
+        int32_t Socket::Connect(SockAddrIn &rSockAddr)
+        {  
+            return Connect((SockAddr *)&rSockAddr);
+        }    
+        
+        int32_t Socket::Connect(SockAddr *pSockAddr)
         {
             int32_t          iRet;
             SockAddr::saPType saSock;
             
-            if (!pSockAddr)
-                throw Exception("Invalid SockAddr pointer.", E_INVALID, E_MEDIUM);
-            
             saSock = pSockAddr->GetStdSockAddr();
+                    
+            iRet = ::connect(sSocket, (sockaddr *)saSock.pData, saSock.iLength);
             
-            if (sSocket)
-                iRet = ::connect(sSocket, saSock.pData, saSock.iLength);
-            if (iRet <= 0)
-                throw Exception("Unable to connect.", E_INVALID, E_MEDIUM);
+            memcpy(pRemoteSA, (sockaddr *)saSock.pData, saSock.iLength);
+            iSASize = saSock.iLength;
+            
+            
+            return iRet;
             
         }    
         
-        void Socket::Listen(uint32_t iQueueLen)
+        int32_t Socket::Listen(uint32_t iQueueLen)
         {
-            uint32_t iRet;
-            if (!sSocket)
-                throw Exception("Invalid socket descriptor.", E_INVALID, E_MEDIUM);
+            int32_t iRet;
             
             iRet = ::listen(sSocket, iQueueLen);
-            if (iRet)
-                throw Exception("Unable to listen.", E_UNKNOWN, E_MEDIUM);
+            return iRet;
         }    
         
-        void Socket::Bind(SockAddr *pSockAddr)
+        int32_t Socket::Bind(SockAddr *pSockAddr)
         {
-            saPType  saSock;
-            uint32_t iRet;
-            
-            if (!sSocket)
-                throw Exception("Invalid socket descriptor.", E_INVALID, E_MEDIUM);
-            
-            if (!pSockAddr)
-                throw Exception("Invalid SockAddr pointer.", E_INVALID, E_MEDIUM);
+            SockAddr::saPType  saSock;
+            uint32_t           ilRet;
             
             saSock = pSockAddr->GetStdSockAddr();
             
-            iRet = ::bind(sSocket, saSock.pData, saSock.iLength);
-            if (iRet)
-                throw Exception("Unable to bind to an address.", E_UNKNOWN, E_MEDIUM);
+            ilRet = ::bind(sSocket, (sockaddr *)saSock.pData, saSock.iLength);
+            return ilRet;
         }    
         
-        Socket Accept(SockAddr *&saSock)
+        int32_t Socket::Accept(Socket &iInSock)
         {
-            sockaddr *saFir;
-            SockAddr *saSec;
+            IIA_SOCKTYPE slSock;
+            uint8_t      ilData[30];
+            sockaddr    *plSockAddr = (sockaddr *)ilData;
+            socklen_t    slSize = 30;
+            int32_t      iRet;
             
-            if (!sSocket)
-                throw Exception("Invalid socket descriptor.", E_INVALID, E_MEDIUM);
             
-            saSock = saSec;
-            delete saFir;
+            slSock = ::accept(sSocket, plSockAddr, &slSize);
+            
+            if (slSock == -1)
+                return -1; 
+            
+            iInSock.Close();
+            iInSock.sSocket = slSock;
+            memcpy(iInSock.pRemoteSA, plSockAddr, slSize);
+            iInSock.iSASize = slSize;
+            iInSock.iFlags = FL_EXISTS | FL_CONNECTED;
+            
+            return 0;
+            
         }    
         
-        Socket Socket::Accept()
+        int32_t Socket::Send(void *pData, uint32_t iLen, uint32_t iInFlags)
+        {   
+            return ::send(sSocket, (const char *)pData, iLen, iInFlags);
+        }    
+        
+        int32_t Socket::Recv(void *pData, uint32_t iLen, uint32_t iInFlags)
         {
             
+            return ::recv(sSocket, (char *)pData, iLen, iInFlags);
+        }    
+        
+        
+        int32_t Socket::SendT(void *pData, uint32_t iLen, uint32_t iInFlags)
+        {   
+        	int32_t  ilRet;
+        	int32_t  ilRetf;
+        	uint32_t ilProgress;
+        	
+        	ilProgress = 0;
+        	
+        	while (ilProgress < iLen)
+        	{
+        	    ilRetf = ::send(sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
+        	    if (ilRetf > 0)
+        	        ilProgress += ilRetf;
+        	    else
+        	    {
+        	    	#ifdef UNIX
+        	    	if (errno != EWOULDBLOCK && errno != ENOBUFS && errno != EINTR)
+        	    	    return ilProgress;
+        	    	#elif WINDOWS
+        	    	if (WSAGetLastError() != WSAEINPROGRESS && WSAGetLastError() != WSAEWOULDBLOCK && WSAGetLastError() != WSAEMSGSIZE && WSAGetLastError() != WSAEINTR)
+        	    	    return ilProgress;
+        	    	#endif
+        	    }
+        	}
+        	
+            return ilProgress;
+        }    
+        
+        int32_t Socket::RecvT(void *pData, uint32_t iLen, uint32_t iInFlags)
+        {
+            int32_t  ilRet;
+        	int32_t  ilRetf;
+        	uint32_t ilProgress;
+        	
+        	ilProgress = 0;
+        	
+        	while (ilProgress < iLen)
+        	{
+        	    ilRetf = ::recv(sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
+        	    if (ilRetf > 0)
+        	        ilProgress += ilRetf;
+        	    else if (ilRetf < 0)
+        	    {
+        	    	#ifdef UNIX
+        	    	if (errno != EWOULDBLOCK && errno != EINTR)
+        	    	    return ilProgress;
+        	    	#elif WINDOWS
+        	    	if (WSAGetLastError() != WSAEINPROGRESS && WSAGetLastError() != WSAEWOULDBLOCK && WSAGetLastError() != WSAEMSGSIZE && WSAGetLastError() != WSAEINTR)
+        	    	    return ilProgress;
+        	    	#endif
+        	    }
+        	}
+        	
+            return ilProgress;
+        }    
+        
+        
+        int32_t Socket::IOCtl(uint32_t iCommand, void *pData)
+        {
+            
+            #ifdef UNIX
+            return ioctl(sSocket, iCommand, pData);
+            #elif WINDOWS
+            return ioctlsocket(sSocket, iCommand, (u_long *)pData);
+            #endif
+            
+        }
+        
+        int32_t Socket::GetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t *slOptVal)
+        {
+            return ::getsockopt(sSocket, iLevel, iOptName, (char *)pOptVal, slOptVal);
+        }    
+        
+        int32_t Socket::SetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t slOptVal)
+        {
+            return ::setsockopt(sSocket, iLevel, iOptName, (char *)pOptVal, slOptVal);
         }    
         
     }    

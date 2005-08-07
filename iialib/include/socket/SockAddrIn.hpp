@@ -1,6 +1,7 @@
 #ifndef SOCKADDRIN_HPP
 #define SOCKADDRIN_HPP
 
+#include <setup.h>
 #include <stdint.h>
 
 #ifdef WINDOWS
@@ -20,13 +21,22 @@ namespace IIALib
     namespace Socket
     {
         
-        class SockAddrIn : public SockAddr
+        class IIAEXPORT SockAddrIn : public SockAddr
         {
             public:
                 InAddr4 sinAddr;
                 uint16_t sinPort;
                 
+                SockAddrIn() {};
+                SockAddrIn(sockaddr *pInSock);
+                SockAddrIn(sockaddr_in *pInSock);
+                SockAddrIn(sockaddr &rInSock);
+                SockAddrIn(sockaddr_in &rInSock);
+                
                 virtual saPType GetStdSockAddr();
+                
+            protected:
+                inline void IIACALL FromStd(sockaddr_in *pInSock);
                 
         };    
         

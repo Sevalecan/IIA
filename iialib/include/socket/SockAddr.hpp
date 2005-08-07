@@ -1,6 +1,7 @@
 #ifndef SOCKADDR_HPP
 #define SOCKADDR_HPP
 
+#include <setup.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +21,7 @@ namespace IIALib
     namespace Socket
     {
         
-        class SockAddr
+        class IIAEXPORT SockAddr
         {
             public:
                 uint16_t saFamily;
@@ -54,7 +55,7 @@ namespace IIALib
                         
                 };    
                 
-                virtual saPType GetStdSockAddr()=0;
+                virtual saPType IIACALL GetStdSockAddr();
                 
         };    
         

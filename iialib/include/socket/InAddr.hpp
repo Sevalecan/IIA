@@ -1,6 +1,7 @@
 #ifndef INADDR_HPP
 #define INADDR_HPP
 
+#include <setup.h>
 #include <stdint.h>
 
 namespace IIALib
@@ -8,7 +9,7 @@ namespace IIALib
     namespace Socket
     {
         
-        class InAddr
+        class IIAEXPORT InAddr
         {
             protected:
                 InAddr() {};

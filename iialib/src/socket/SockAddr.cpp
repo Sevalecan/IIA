@@ -1,3 +1,4 @@
+#define IIASOURCE
 #include "socket/SockAddr.hpp"
 #include "exceptions/Exception.hpp"
 
@@ -49,6 +50,11 @@ namespace IIALib
             return 0;
         }    
         
+        SockAddr::saPType SockAddr::GetStdSockAddr()
+        {
+        	saPType ret;
+        	return ret;
+        }
         
     }    
     

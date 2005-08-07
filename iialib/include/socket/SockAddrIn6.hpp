@@ -1,7 +1,10 @@
 #ifndef SOCKADDRIN6_HPP
 #define SOCKADDRIN6_HPP
 
+#include <setup.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef WINDOWS
 #include <winsock2.h>
@@ -21,7 +24,7 @@ namespace IIALib
     namespace Socket
     {
         
-        class SockAddrIn6 : public SockAddr
+        class IIAEXPORT SockAddrIn6 : public SockAddr
         {
             public:
                 //sa_family_t sin6Family;
@@ -29,7 +32,15 @@ namespace IIALib
                 uint32_t sin6FlowInfo;
                 uint16_t sin6Port;
                 
-                virtual saPType GetStdSockAddr();
+                SockAddrIn6(sockaddr *pInSock);
+                SockAddrIn6(sockaddr_in6 *pInSock);
+                SockAddrIn6(sockaddr &rInSock);
+                SockAddrIn6(sockaddr_in6 &rInSock);
+                
+                virtual saPType IIACALL GetStdSockAddr();
+                
+            protected:
+                inline void FromStd(sockaddr_in6 *pInSock);
                 
         };    
         

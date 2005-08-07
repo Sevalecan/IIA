@@ -1,6 +1,7 @@
 #ifndef INADDR6_HPP
 #define INADDR6_HPP
 
+#include <setup.h>
 #include <stdint.h>
 
 #ifdef WINDOWS
@@ -18,7 +19,7 @@ namespace IIALib
     namespace Socket
     {
         
-        class InAddr6 : public InAddr
+        class IIAEXPORT InAddr6 : public InAddr
         {
             public:
                 
