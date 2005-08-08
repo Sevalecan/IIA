@@ -52,29 +52,22 @@
 	<File name="test/fatest.cpp" open="0" top="0">
 		<Cursor position="97" topLine="0"/>
 	</File>
-	<File name="test/filesend/filesend.cpp" open="1" top="0">
-		<Cursor position="0" topLine="0"/>
-	</File>
-	<File name="test/filesend/filesend.hpp" open="1" top="1">
+	<File name="test/filesend/filesend.hpp" open="0" top="0">
 		<Cursor position="388" topLine="0"/>
-	</File>
-	<File name="test/filesend/fsprec.h" open="1" top="0">
-		<Cursor position="0" topLine="0"/>
 	</File>
 	<File name="test/socktest.cpp" open="0" top="0">
 		<Cursor position="1749" topLine="27"/>
 	</File>
 	<File name="test/socktest2.cpp" open="0" top="0">
-		<Cursor position="1746" topLine="73"/>
+		<Cursor position="2104" topLine="73"/>
 	</File>
 	<File name="test/socktest3.cpp" open="0" top="0">
 		<Cursor position="1581" topLine="137"/>
 	</File>
-	<Expand folder="/Sources/test/filesend"/>
+	<Expand folder="/Sources/src"/>
 	<Expand folder="/Sources/test"/>
 	<Expand folder="/Sources"/>
 	<Expand folder="/Headers/include"/>
-	<Expand folder="/Headers/test/filesend"/>
 	<Expand folder="/Headers/test"/>
 	<Expand folder="/Headers"/>
 </Code::Blocks_layout_file>
