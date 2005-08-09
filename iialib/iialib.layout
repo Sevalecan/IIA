@@ -53,7 +53,7 @@
 		<Cursor position="97" topLine="0"/>
 	</File>
 	<File name="test/filesend/filesend.hpp" open="0" top="0">
-		<Cursor position="388" topLine="0"/>
+		<Cursor position="417" topLine="0"/>
 	</File>
 	<File name="test/socktest.cpp" open="0" top="0">
 		<Cursor position="1749" topLine="27"/>
@@ -64,10 +64,4 @@
 	<File name="test/socktest3.cpp" open="0" top="0">
 		<Cursor position="1581" topLine="137"/>
 	</File>
-	<Expand folder="/Sources/src"/>
-	<Expand folder="/Sources/test"/>
-	<Expand folder="/Sources"/>
-	<Expand folder="/Headers/include"/>
-	<Expand folder="/Headers/test"/>
-	<Expand folder="/Headers"/>
 </Code::Blocks_layout_file>

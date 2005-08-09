@@ -71,10 +71,29 @@ namespace IIALib
                 #define IIA_SOCKTYPE SOCKET
                 #endif               // because after all, this is C++ and it doesn't like implicit casts.
                 
+                /*
+                class Instance
+                {
+                    #ifdef UNIX          // if on a unix-like system, we declare the socket descriptor as an int
+                    int    sSocket;
+                    #define IIA_SOCKTYPE int
+                    #elif WINDOWS        // otherwise, if its some piece of crap like windows which couldn't
+                    SOCKET sSocket;      // just be nice and comply with unix stuff then we declare it as a SOCKET
+                    #define IIA_SOCKTYPE SOCKET
+                    #endif               // because after all, this is C++ and it doesn't like implicit casts.
+                    
+                    uint32_t  iFlags;    // some state flags, see enum FLAGS. 
+                    sockaddr *pRemoteSA; // Remote sockaddr information allocated as new uint8_t[30].
+                    uint32_t  iSASize;   // size of data contained therein
+                    uint32_t  iRefCount;
+                }
+                */
                 uint32_t  iFlags;    // some state flags, see enum FLAGS. 
                 sockaddr *pRemoteSA; // Remote sockaddr information allocated as new uint8_t[30].
                 uint32_t  iSASize;   // size of data contained therein
+                uint32_t  iRefCount;
                 
+                //Instance *cInst;
                 
             public:
                 

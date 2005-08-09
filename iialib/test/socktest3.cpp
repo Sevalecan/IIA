@@ -101,7 +101,10 @@ int32_t TestRecv::RLoop(uint32_t iInLen, string iInName)
 	//flFile.open(basename(iInName.c_str()), fstream::out | fstream::binary);
 	//truncate("testo.png", iInLen);
 	
-	flFile.open(basename(iInName.c_str()), fstream::out | fstream::binary);
+	flFile.open(basename(iInName.c_str()), fstream::out | fstream::binary | fstream::trunc);
+	flFile.seekp(iInLen-1, ios_base::beg);
+	flFile.write("", 1);
+	flFile.flush();
 	flFile.seekp(0, ios_base::beg);
 	ilDat.resize(MBUFSIZE);
 	
