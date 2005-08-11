@@ -36,8 +36,15 @@ namespace FileSend
         sPeer.Listen(1);
         sPeer.Accept(slAccp);
         
+        sPeer.Close();
+        sPeer = slAccp;
         
         return 0;
+    }
+    
+    int32_t FSSession::SessionLoop()
+    {
+    	
     }
 	
 }

@@ -85,9 +85,9 @@ namespace IIALib
                         ~Instance();
                 };
                 
-                Instance *cInst;
-                
             public:
+                
+                Instance *cInst;
                 
                 Socket();            // default constructor, does not create a socket.
                 Socket(int iNameSpace, int iStyle, int iProtocol); // Creates a socket with the specified info.
