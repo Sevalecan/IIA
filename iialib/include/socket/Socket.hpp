@@ -20,6 +20,7 @@
 #endif
 
 #include "exceptions/Exception.hpp"
+#include "threads/Mutex.hpp"
 #include "socket/InAddr.hpp"
 #include "socket/InAddr4.hpp"
 #include "socket/InAddr6.hpp"
@@ -63,37 +64,28 @@ namespace IIALib
                     RET_WOULDBLOCK
                 };    
                 
-                #ifdef UNIX          // if on a unix-like system, we declare the socket descriptor as an int
-                int    sSocket;
-                #define IIA_SOCKTYPE int
-                #elif WINDOWS        // otherwise, if its some piece of crap like windows which couldn't
-                SOCKET sSocket;      // just be nice and comply with unix stuff then we declare it as a SOCKET
-                #define IIA_SOCKTYPE SOCKET
-                #endif               // because after all, this is C++ and it doesn't like implicit casts.
-                
-                /*
                 class Instance
                 {
-                    #ifdef UNIX          // if on a unix-like system, we declare the socket descriptor as an int
-                    int    sSocket;
-                    #define IIA_SOCKTYPE int
-                    #elif WINDOWS        // otherwise, if its some piece of crap like windows which couldn't
-                    SOCKET sSocket;      // just be nice and comply with unix stuff then we declare it as a SOCKET
-                    #define IIA_SOCKTYPE SOCKET
-                    #endif               // because after all, this is C++ and it doesn't like implicit casts.
-                    
-                    uint32_t  iFlags;    // some state flags, see enum FLAGS. 
-                    sockaddr *pRemoteSA; // Remote sockaddr information allocated as new uint8_t[30].
-                    uint32_t  iSASize;   // size of data contained therein
-                    uint32_t  iRefCount;
-                }
-                */
-                uint32_t  iFlags;    // some state flags, see enum FLAGS. 
-                sockaddr *pRemoteSA; // Remote sockaddr information allocated as new uint8_t[30].
-                uint32_t  iSASize;   // size of data contained therein
-                uint32_t  iRefCount;
+                    public:
+                        #ifdef UNIX          // if on a unix-like system, we declare the socket descriptor as an int
+                        int    sSocket;
+                        #define IIA_SOCKTYPE int
+                        #elif WINDOWS        // otherwise, if its some piece of crap like windows which couldn't
+                        SOCKET sSocket;      // just be nice and comply with unix stuff then we declare it as a SOCKET
+                        #define IIA_SOCKTYPE SOCKET
+                        #endif               // because after all, this is C++ and it doesn't like implicit casts.
+                        
+                        uint32_t  iFlags;    // some state flags, see enum FLAGS. 
+                        sockaddr *pRemoteSA; // Remote sockaddr information allocated as new uint8_t[30].
+                        uint32_t  iSASize;   // size of data contained therein
+                        uint32_t  iRefCount; // Instance reference count
+                        Threads::Mutex cMutex;
+                        
+                        Instance();
+                        ~Instance();
+                };
                 
-                //Instance *cInst;
+                Instance *cInst;
                 
             public:
                 
@@ -101,6 +93,8 @@ namespace IIALib
                 Socket(int iNameSpace, int iStyle, int iProtocol); // Creates a socket with the specified info.
                 ~Socket();           // Destrcutor
                 
+                int32_t  NewInstance();
+                int32_t  CutInstance();
                 int32_t  Create(int iNameSpace = AF_INET, int iStyle = SOCK_STREAM, int iProtocol = IPPROTO_TCP);
                 void     ShutDown(int iHow = 2);
                 void     Close();
@@ -120,10 +114,8 @@ namespace IIALib
                 int32_t  IOCtl(uint32_t iCommand, void *pData);
                 int32_t  GetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t *slOptVal);
                 int32_t  SetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t slOptVal);
-                // of course, for the above function(ioctl), microsoft has to take a completley
-                // different approach to ioctl... >:E
-                // THATS FOR MY WIFE, FUCK YOU AND DIE. *punches microshit* 
                 
+                Socket &operator =(Socket &);
         };    
         
     };

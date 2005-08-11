@@ -38,6 +38,7 @@ namespace IIALib
                 std::string  sError;
                 
                 Exception(std::string sInError, int32_t iInError, uint32_t iInLevel);
+                Exception(std::string sInError, int32_t iInError);
                 
         };    
         

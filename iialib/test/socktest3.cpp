@@ -204,7 +204,7 @@ int32_t TestRecv::RLoop(uint32_t iInLen, string iInName)
         	
         	while (ilProgress < iLen)
         	{
-        	    ilRetf = ::recv(sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
+        	    ilRetf = ::recv(cInst->sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
         	    if (ilRetf > 0)
         	        ilProgress += ilRetf;
         	    else if (ilRetf < 0)

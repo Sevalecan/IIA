@@ -14,6 +14,13 @@ namespace IIALib
             iLevel = iInLevel;
         }    
         
+        Exception::Exception(std::string sInError, int32_t iInError)
+        {
+            iError = iInError;
+            sError = sInError;
+            iLevel = 0;
+        }    
+        
     }    
     
 }

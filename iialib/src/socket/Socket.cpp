@@ -14,6 +14,26 @@ namespace IIALib
         WORD    Socket::wsaWord;
         #endif
         
+        Socket::Instance::Instance()
+        {
+            
+            iFlags = 0;
+            pRemoteSA = (sockaddr *)new uint8_t[30];
+            iSASize = 0;
+            iRefCount = 1;
+            
+            if (!pRemoteSA)
+                throw Exception("Could not allocate data for socket instance.", E_NOMEMORY);
+            
+        }
+        
+        Socket::Instance::~Instance()
+        {
+            
+            delete [] (uint8_t *)pRemoteSA;
+            
+        }
+        
         void Socket::Init()
         {
             #ifdef WINDOWS
@@ -31,60 +51,111 @@ namespace IIALib
         
         Socket::Socket()
         {
-            iFlags = 0;
-            pRemoteSA = (sockaddr *)new uint8_t[30];
-            iSASize = 0;
+        	cInst = NULL;
+            NewInstance();
+            if (!cInst)
+                throw Exception("Could not allocate data for socket instance.", E_NOMEMORY);
+            
         }    
         
         Socket::Socket(int iNameSpace, int iStyle, int iProtocol)
         {
             int32_t iRet;
             
-            iFlags = 0;
-            pRemoteSA = (sockaddr *)new uint8_t[30];
-            iSASize = 0;
+            cInst = NULL;
+            
+            NewInstance();
+            if (!cInst)
+                throw Exception("Could not allocate data for socket instance.", E_NOMEMORY);
             
             iRet = Create(iNameSpace, iStyle, iProtocol);
         }    
         
         Socket::~Socket()
         {
-            Close();
-            delete [] (uint8_t *)pRemoteSA;
+        	if (cInst->iRefCount == 1)
+        	{
+                Close();
+                delete cInst;
+        	}
         }    
+        
+        int32_t Socket::NewInstance()
+        {
+            
+            if (cInst)
+            {
+                if (cInst->iRefCount <= 1)
+                {
+                    cInst->iRefCount--;
+                    cInst = NULL;
+                    cInst = new Instance();
+                }
+            }
+            else if (!cInst)
+                cInst = new Instance();
+            
+            return 0;
+        }
+        
+        int32_t Socket::CutInstance()
+        {
+            
+            if (cInst && cInst->iRefCount > 1)
+            {
+                cInst->iRefCount--;
+                cInst = NULL;
+            }
+            else if (cInst && cInst->iRefCount == 1)
+            {
+                delete cInst;
+                cInst = NULL;
+            }
+                
+            
+            return 0;
+        }
         
         int32_t Socket::Create(int iNameSpace, int iStyle, int iProtocol)
         {
-            if ((iFlags & FL_EXISTS))
+        	cInst->cMutex.Lock();
+            if ((cInst->iFlags & FL_EXISTS))
                 Close();
             
-            sSocket = ::socket(iNameSpace, iStyle, iProtocol);
+            cInst->sSocket = ::socket(iNameSpace, iStyle, iProtocol);
             
-            if ((int32_t)sSocket == -1)
+            if ((int32_t)cInst->sSocket == -1)
                 return -1;
             
-            iFlags |= FL_EXISTS;
+            cInst->iFlags |= FL_EXISTS;
+            cInst->cMutex.UnLock();
+            
+            return cInst->sSocket;
         }    
         
         void Socket::Close()
         {
-            if (sSocket)
+        	cInst->cMutex.Lock();
+            if (cInst->sSocket)
             {
                 #ifdef UNIX
-                ::close(sSocket);
+                ::close(cInst->sSocket);
                 #elif WINDOWS
-                ::closesocket(sSocket);
+                ::closesocket(cInst->sSocket);
                 #endif
             }    
             
-            iFlags &= ~FL_EXISTS;
-            sSocket = 0;
+            cInst->iFlags &= ~FL_EXISTS;
+            cInst->sSocket = 0;
+            cInst->cMutex.UnLock();
         }    
         
         void Socket::ShutDown(int iHow)
         {
-            if (sSocket)
-                ::shutdown(sSocket, iHow);
+        	cInst->cMutex.Lock();
+            if (cInst->sSocket)
+                ::shutdown(cInst->sSocket, iHow);
+            cInst->cMutex.UnLock();
         }    
         
         int32_t Socket::Connect(SockAddrIn &rSockAddr)
@@ -98,12 +169,13 @@ namespace IIALib
             SockAddr::saPType saSock;
             
             saSock = pSockAddr->GetStdSockAddr();
-                    
-            iRet = ::connect(sSocket, (sockaddr *)saSock.pData, saSock.iLength);
             
-            memcpy(pRemoteSA, (sockaddr *)saSock.pData, saSock.iLength);
-            iSASize = saSock.iLength;
+            cInst->cMutex.Lock();
+            iRet = ::connect(cInst->sSocket, (sockaddr *)saSock.pData, saSock.iLength);
             
+            memcpy(cInst->pRemoteSA, (sockaddr *)saSock.pData, saSock.iLength);
+            cInst->iSASize = saSock.iLength;
+            cInst->cMutex.UnLock();
             
             return iRet;
             
@@ -113,7 +185,10 @@ namespace IIALib
         {
             int32_t iRet;
             
-            iRet = ::listen(sSocket, iQueueLen);
+            cInst->cMutex.Lock();
+            iRet = ::listen(cInst->sSocket, iQueueLen);
+            cInst->cMutex.UnLock();
+            
             return iRet;
         }    
         
@@ -123,8 +198,10 @@ namespace IIALib
             uint32_t           ilRet;
             
             saSock = pSockAddr->GetStdSockAddr();
+            cInst->cMutex.Lock();
+            ilRet = ::bind(cInst->sSocket, (sockaddr *)saSock.pData, saSock.iLength);
+            cInst->cMutex.UnLock();
             
-            ilRet = ::bind(sSocket, (sockaddr *)saSock.pData, saSock.iLength);
             return ilRet;
         }    
         
@@ -136,17 +213,20 @@ namespace IIALib
             socklen_t    slSize = 30;
             int32_t      iRet;
             
+            cInst->cMutex.Lock();
             
-            slSock = ::accept(sSocket, plSockAddr, &slSize);
+            slSock = ::accept(cInst->sSocket, plSockAddr, &slSize);
             
             if (slSock == -1)
                 return -1; 
             
             iInSock.Close();
-            iInSock.sSocket = slSock;
-            memcpy(iInSock.pRemoteSA, plSockAddr, slSize);
-            iInSock.iSASize = slSize;
-            iInSock.iFlags = FL_EXISTS | FL_CONNECTED;
+            iInSock.cInst->sSocket = slSock;
+            memcpy(iInSock.cInst->pRemoteSA, plSockAddr, slSize);
+            iInSock.cInst->iSASize = slSize;
+            iInSock.cInst->iFlags = FL_EXISTS | FL_CONNECTED;
+            
+            cInst->cMutex.UnLock();
             
             return 0;
             
@@ -154,13 +234,24 @@ namespace IIALib
         
         int32_t Socket::Send(void *pData, uint32_t iLen, uint32_t iInFlags)
         {   
-            return ::send(sSocket, (const char *)pData, iLen, iInFlags);
+        	int32_t ilRet;
+        	
+        	cInst->cMutex.Lock();
+            ilRet = ::send(cInst->sSocket, (const char *)pData, iLen, iInFlags);
+            cInst->cMutex.UnLock();
+            
+            return ilRet;
         }    
         
         int32_t Socket::Recv(void *pData, uint32_t iLen, uint32_t iInFlags)
         {
+            int32_t ilRet;
             
-            return ::recv(sSocket, (char *)pData, iLen, iInFlags);
+            cInst->cMutex.Lock();
+            ilRet = ::recv(cInst->sSocket, (char *)pData, iLen, iInFlags);
+            cInst->cMutex.UnLock();
+            
+            return ilRet;
         }    
         
         
@@ -172,9 +263,11 @@ namespace IIALib
         	
         	ilProgress = 0;
         	
+        	cInst->cMutex.Lock();
+        	
         	while (ilProgress < iLen)
         	{
-        	    ilRetf = ::send(sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
+        	    ilRetf = ::send(cInst->sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
         	    if (ilRetf > 0)
         	        ilProgress += ilRetf;
         	    else
@@ -189,6 +282,8 @@ namespace IIALib
         	    }
         	}
         	
+        	cInst->cMutex.UnLock();
+        	
             return ilProgress;
         }    
         
@@ -200,9 +295,11 @@ namespace IIALib
         	
         	ilProgress = 0;
         	
+        	cInst->cMutex.Lock();
+        	
         	while (ilProgress < iLen)
         	{
-        	    ilRetf = ::recv(sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
+        	    ilRetf = ::recv(cInst->sSocket, (char *)pData+ilProgress, iLen-ilProgress, iInFlags);
         	    if (ilRetf > 0)
         	        ilProgress += ilRetf;
         	    else if (ilRetf < 0)
@@ -217,30 +314,55 @@ namespace IIALib
         	    }
         	}
         	
+        	cInst->cMutex.UnLock();
+        	
             return ilProgress;
         }    
         
         
         int32_t Socket::IOCtl(uint32_t iCommand, void *pData)
         {
+        	int32_t ilRet;
             
+            cInst->cMutex.Lock();
             #ifdef UNIX
-            return ioctl(sSocket, iCommand, pData);
+            ilRet = ioctl(cInst->sSocket, iCommand, pData);
             #elif WINDOWS
-            return ioctlsocket(sSocket, iCommand, (u_long *)pData);
+            ilRet = ioctlsocket(cInst->sSocket, iCommand, (u_long *)pData);
             #endif
+            cInst->cMutex.UnLock();
             
+            return ilRet;
         }
         
         int32_t Socket::GetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t *slOptVal)
         {
-            return ::getsockopt(sSocket, iLevel, iOptName, (char *)pOptVal, slOptVal);
+        	int32_t ilRet;
+        	
+        	cInst->cMutex.Lock();
+            ilRet = ::getsockopt(cInst->sSocket, iLevel, iOptName, (char *)pOptVal, slOptVal);
+            cInst->cMutex.UnLock();
+            
+            return ilRet;
         }    
         
         int32_t Socket::SetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t slOptVal)
         {
-            return ::setsockopt(sSocket, iLevel, iOptName, (char *)pOptVal, slOptVal);
+        	int32_t ilRet;
+        	
+        	cInst->cMutex.Lock();
+            ilRet = ::setsockopt(cInst->sSocket, iLevel, iOptName, (char *)pOptVal, slOptVal);
+            cInst->cMutex.UnLock();
+            
+            return ilRet;
         }    
+        
+        Socket &Socket::operator =(Socket &ilSock)
+        {
+        	CutInstance();
+        	cInst = ilSock.cInst;
+        	return *this;
+        }
         
     }    
     
