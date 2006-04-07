@@ -5,6 +5,9 @@
 #include <pthread.h>
 #include <stdint.h>
 
+#ifdef WINDOWS
+#undef Yield
+#endif
 
 namespace IIALib
 {
@@ -20,7 +23,6 @@ namespace IIALib
     		public:
                 static void *ThreadCall(void *plThread);
                 static void *ThreadCallC(void *plThread);
-    		public:
                 
                 pthread_t      cThread;
                 uint32_t       iFlags;

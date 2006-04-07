@@ -110,7 +110,6 @@ namespace IIALib
     	int32_t Thread::Join(void **plStatus)
     	{
     		return pthread_join(cThread, plStatus);
-    		return pthread_join(cThread, plStatus);
     	}
     	
     	pthread_t Thread::Self()

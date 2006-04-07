@@ -1,6 +1,8 @@
 #ifndef SOCKADDRIN6_HPP
 #define SOCKADDRIN6_HPP
 
+#define USE_IPV6
+
 #include <setup.h>
 #include <stdint.h>
 #include <stdlib.h>

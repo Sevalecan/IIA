@@ -12,11 +12,14 @@
 #include <ws2tcpip.h>
 #endif
 
+#define USE_IPV6
+
 #ifdef UNIX
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/ioctl.h>
+#include <fcntl.h>
 #endif
 
 #include "exceptions/Exception.hpp"
@@ -110,10 +113,13 @@ namespace IIALib
                 
                 int32_t  SendT(void *pData, uint32_t iLen, uint32_t iInFlags = 0);
                 int32_t  RecvT(void *pData, uint32_t iLen, uint32_t iInFlags = 0);
+                int32_t  SendTo(void *pData, uint32_t iLen, uint32_t iInFlags, SockAddrIn &saIn);
+                int32_t  RecvFrom(void *pData, uint32_t iLen, uint32_t iInFlags, SockAddrIn &saOut);
                 
-                int32_t  IOCtl(uint32_t iCommand, void *pData);
+                int32_t  IOCtl(int32_t iCommand, void *pData);
                 int32_t  GetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t *slOptVal);
                 int32_t  SetSockOpt(int32_t iLevel, int32_t iOptName, void *pOptVal, socklen_t slOptVal);
+                int32_t  Select(int16_t ilFlags, struct timeval *timeout);
                 
                 Socket &operator =(Socket &);
         };    

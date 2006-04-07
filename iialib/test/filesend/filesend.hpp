@@ -4,6 +4,7 @@
 #include "fsprec.h"
 #include <stdint.h>
 #include <string>
+#include <vector>
 #include <socket/Socket.hpp>
 
 #define FS_CONNECTED 0x0001;
@@ -14,6 +15,13 @@ namespace FileSend
 {
 	// blah
 	
+	class FSPacket
+	{
+		public:
+            uint32_t iLength;
+            uint32_t iType;
+            std::vector<int8_t> vData;
+	};
 	
 	class FSSession
 	{

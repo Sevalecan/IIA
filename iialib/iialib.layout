@@ -1,95 +1,11 @@
-<?xml version="1.0"?>
-<!DOCTYPE Code::Blocks_layout_file>
-<Code::Blocks_layout_file>
-	<File name="include\exceptions\Exception.hpp" open="0" top="0">
-		<Cursor position="212" topLine="0"/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget index="-1" />
+	<File name="src\socket\Socket.cpp" open="1" top="1">
+		<Cursor position="12450" topLine="382" />
 	</File>
-	<File name="include\setup.h" open="0" top="0">
-		<Cursor position="463" topLine="0"/>
-	</File>
-	<File name="include\socket\HostEnt.hpp" open="0" top="0">
-		<Cursor position="357" topLine="0"/>
-	</File>
-	<File name="include\socket\InAddr.hpp" open="0" top="0">
-		<Cursor position="169" topLine="0"/>
-	</File>
-	<File name="include\socket\InAddr4.hpp" open="0" top="0">
-		<Cursor position="291" topLine="0"/>
-	</File>
-	<File name="include\socket\InAddr6.hpp" open="0" top="0">
-		<Cursor position="299" topLine="0"/>
-	</File>
-	<File name="include\socket\SockAddr.hpp" open="0" top="0">
-		<Cursor position="1635" topLine="21"/>
-	</File>
-	<File name="include\socket\SockAddrIn.hpp" open="0" top="0">
-		<Cursor position="883" topLine="0"/>
-	</File>
-	<File name="include\socket\SockAddrIn6.hpp" open="0" top="0">
-		<Cursor position="927" topLine="4"/>
-	</File>
-	<File name="include\socket\Socket.hpp" open="1" top="0">
-		<Cursor position="3684" topLine="0"/>
-	</File>
-	<File name="include\threads\Mutex.hpp" open="0" top="0">
-		<Cursor position="818" topLine="5"/>
-	</File>
-	<File name="include\threads\Thread.hpp" open="0" top="0">
-		<Cursor position="1405" topLine="24"/>
-	</File>
-	<File name="src\exceptions\Exception.cpp" open="0" top="0">
-		<Cursor position="11" topLine="0"/>
-	</File>
-	<File name="src\socket\HostEnt.cpp" open="0" top="0">
-		<Cursor position="11" topLine="0"/>
-	</File>
-	<File name="src\socket\SockAddr.cpp" open="0" top="0">
-		<Cursor position="1480" topLine="0"/>
-	</File>
-	<File name="src\socket\SockAddrIn.cpp" open="0" top="0">
-		<Cursor position="1340" topLine="0"/>
-	</File>
-	<File name="src\socket\SockAddrIn6.cpp" open="0" top="0">
-		<Cursor position="11" topLine="0"/>
-	</File>
-	<File name="src\socket\Socket.cpp" open="0" top="0">
-		<Cursor position="2027" topLine="0"/>
-	</File>
-	<File name="src\threads\Mutex.cpp" open="0" top="0">
-		<Cursor position="1637" topLine="45"/>
-	</File>
-	<File name="src\threads\Thread.cpp" open="0" top="0">
-		<Cursor position="2602" topLine="30"/>
-	</File>
-	<File name="test\fatest.cpp" open="0" top="0">
-		<Cursor position="97" topLine="0"/>
-	</File>
-	<File name="test\filesend\filesend.cpp" open="1" top="1">
-		<Cursor position="995" topLine="8"/>
-	</File>
-	<File name="test\filesend\filesend.hpp" open="1" top="0">
-		<Cursor position="417" topLine="0"/>
-	</File>
-	<File name="test\socktest.cpp" open="0" top="0">
-		<Cursor position="1749" topLine="27"/>
-	</File>
-	<File name="test\socktest2.cpp" open="0" top="0">
-		<Cursor position="2104" topLine="73"/>
-	</File>
-	<File name="test\socktest3.cpp" open="0" top="0">
-		<Cursor position="5738" topLine="188"/>
-	</File>
-	<File name="test\test.cpp" open="0" top="0">
-		<Cursor position="69" topLine="0"/>
-	</File>
-	<Expand folder="/Sources/src/threads"/>
-	<Expand folder="/Sources/src"/>
-	<Expand folder="/Sources/test/filesend"/>
-	<Expand folder="/Sources/test"/>
-	<Expand folder="/Sources"/>
-	<Expand folder="/Headers/include/socket"/>
-	<Expand folder="/Headers/include"/>
-	<Expand folder="/Headers/test/filesend"/>
-	<Expand folder="/Headers/test"/>
-	<Expand folder="/Headers"/>
-</Code::Blocks_layout_file>
+	<Expand folder="/Sources/src/socket" />
+	<Expand folder="/Sources/src" />
+	<Expand folder="/Sources" />
+	<Expand folder="/Headers" />
+</CodeBlocks_layout_file>

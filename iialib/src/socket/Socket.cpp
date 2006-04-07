@@ -130,7 +130,7 @@ namespace IIALib
             cInst->iFlags |= FL_EXISTS;
             cInst->cMutex.UnLock();
             
-            return cInst->sSocket;
+            return 0;
         }    
         
         void Socket::Close()
@@ -217,8 +217,10 @@ namespace IIALib
             
             slSock = ::accept(cInst->sSocket, plSockAddr, &slSize);
             
-            if (slSock == -1)
+            if (slSock == -1) {
+                cInst->cMutex.UnLock();
                 return -1; 
+            }
             
             iInSock.Close();
             iInSock.cInst->sSocket = slSock;
@@ -320,13 +322,45 @@ namespace IIALib
         }    
         
         
-        int32_t Socket::IOCtl(uint32_t iCommand, void *pData)
+        int32_t Socket::SendTo(void *pData, uint32_t iLen, uint32_t iInFlags, SockAddrIn &saIn)
+        {   
+        	int32_t ilRet;
+        	SockAddr::saPType spSocket;
+        	spSocket = saIn.GetStdSockAddr();
+        	
+        	cInst->cMutex.Lock();
+            ilRet = ::sendto(cInst->sSocket, (const char *)pData, iLen, iInFlags, (sockaddr *)spSocket.pData, spSocket.iLength);
+            cInst->cMutex.UnLock();
+            
+            return ilRet;
+        }    
+        
+        int32_t Socket::RecvFrom(void *pData, uint32_t iLen, uint32_t iInFlags, SockAddrIn &saOut)
+        {
+            int32_t ilRet;
+            SockAddr::saPType spSocket;
+            spSocket.Resize(32);
+            
+            cInst->cMutex.Lock();
+            #ifdef UNIX
+            ilRet = ::recvfrom(cInst->sSocket, (char *)pData, iLen, iInFlags, (sockaddr *)spSocket.pData, (socklen_t *)&(spSocket.iLength));
+            #elif WINDOWS
+            ilRet = ::recvfrom(cInst->sSocket, (char *)pData, iLen, iInFlags, (sockaddr *)spSocket.pData, (int *)&(spSocket.iLength));
+            #endif
+            cInst->cMutex.UnLock();
+            
+            saOut = (sockaddr_in *)spSocket.pData;
+            
+            return ilRet;
+        }    
+        
+        int32_t Socket::IOCtl(int32_t iCommand, void *pData)
         {
         	int32_t ilRet;
             
             cInst->cMutex.Lock();
             #ifdef UNIX
-            ilRet = ioctl(cInst->sSocket, iCommand, pData);
+            ilRet = fcntl(cInst->sSocket, iCommand, pData);
             #elif WINDOWS
             ilRet = ioctlsocket(cInst->sSocket, iCommand, (u_long *)pData);
             #endif
@@ -356,6 +390,34 @@ namespace IIALib
             
             return ilRet;
         }    
+        
+        int32_t Socket::Select(int16_t ilFlags, struct timeval *timeout)
+        {
+            int32_t ilRet;
+            fd_set flRSet;
+            fd_set flWSet;
+            fd_set flESet;
+            
+            FD_ZERO(&flRSet);
+            FD_ZERO(&flWSet);
+            FD_ZERO(&flESet);
+            FD_SET(cInst->sSocket, &flRSet);
+            FD_SET(cInst->sSocket, &flWSet);
+            FD_SET(cInst->sSocket, &flESet);
+            
+            cInst->cMutex.Lock();
+            
+            if (ilFlags) {
+                ilRet = ::select(FD_SETSIZE, (ilFlags & 1) ? &flRSet : NULL, (ilFlags & 2) ? &flWSet : NULL, (ilFlags & 4) ? &flESet : NULL, timeout);
+                ilRet = (FD_ISSET(cInst->sSocket, &flESet) ? 1:0 << 2) | (FD_ISSET(cInst->sSocket, &flWSet) ? 1:0 << 1) | (FD_ISSET(cInst->sSocket, &flRSet)?1:0);
+            }
+            else
+                ilRet = 0;
+            
+            cInst->cMutex.UnLock();
+            
+            return ilRet;
+        }
         
         Socket &Socket::operator =(Socket &ilSock)
         {

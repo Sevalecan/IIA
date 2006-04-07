@@ -27,7 +27,7 @@ namespace IIALib
                 InAddr4 sinAddr;
                 uint16_t sinPort;
                 
-                SockAddrIn() {};
+                SockAddrIn() { saFamily = AF_INET; };
                 SockAddrIn(sockaddr *pInSock);
                 SockAddrIn(sockaddr_in *pInSock);
                 SockAddrIn(sockaddr &rInSock);

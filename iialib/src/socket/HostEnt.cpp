@@ -32,24 +32,24 @@ namespace IIALib
             return 0;
         }    
         
-        uint32_t HostEnt::GetHostByName(std::string sName)
-        {
-            hostent *hRet;
-            
-            hRet = gethostbyname(sName.c_str());
-            if (hRet == NULL) return 1;
-            
-            Fromhostent(hRet);
-            
-            return 0;
-        }
-            
         uint32_t HostEnt::GetHostByAddr(InAddr *aAddr, uint32_t iLength, uint32_t iFormat)
         {
             hostent *hRet;
             
             hRet = gethostbyaddr((const char *)aAddr->iData, iLength, iFormat);
             
+            if (hRet == NULL) return 1;
+            
+            Fromhostent(hRet);
+            
+            return 0;
+        }
+        
+        uint32_t HostEnt::GetHostByName(const char *zName)
+        {
+            hostent *hRet;
+            
+            hRet = gethostbyname(zName);
             if (hRet == NULL) return 1;
             
             Fromhostent(hRet);

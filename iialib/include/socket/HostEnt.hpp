@@ -40,8 +40,9 @@ namespace IIALib
                 std::vector<tByte16>     hAddrList;
                 uint8_t                 *hAddr;
                 
-                uint32_t GetHostByName(std::string sName);
                 uint32_t GetHostByAddr(InAddr *aAddr, uint32_t iLength, uint32_t iFormat);
+                //uint32_t GetHostByNameEx(std::string sName);
+                uint32_t GetHostByName(const char *zName);
                 
             private:
                 

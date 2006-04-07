@@ -2,6 +2,7 @@
 <!DOCTYPE Code::Blocks_workspace_file>
 <Code::Blocks_workspace_file>
 	<Workspace title="Default workspace">
-		<Project filename="iialib.cbp" active="1"/>
+		<Project filename="..\..\bafirc\bafirc.cbp"/>
+		<Project filename="..\..\sevirc\sevircw.cbp" active="1"/>
 	</Workspace>
 </Code::Blocks_workspace_file>

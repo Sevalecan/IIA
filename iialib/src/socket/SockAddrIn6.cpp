@@ -59,7 +59,11 @@ namespace IIALib
             pWork = (struct sockaddr_in6 *)saWork.pData;
             
             pWork->sin6_family        = saFamily;
+            #ifndef CYGWIN
             memcpy(pWork->sin6_addr.s6_addr32, sin6Addr.uIn6.u6_addr32, 4*sizeof(uint32_t));
+            #else
+            memcpy(pWork->sin6_addr.s6_addr, sin6Addr.uIn6.u6_addr8, 4*sizeof(uint32_t));
+            #endif
             pWork->sin6_port          = sin6Port;
             
             return saWork;

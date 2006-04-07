@@ -1,167 +1,187 @@
-<?xml version="1.0"?>
-<!DOCTYPE Code::Blocks_project_file>
-<Code::Blocks_project_file>
-	<FileVersion major="1" minor="1"/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="2" />
 	<Project>
-		<Option title="Console application"/>
-		<Option makefile="Makefile"/>
-		<Option makefile_is_custom="0"/>
-		<Option compiler="0"/>
+		<Option title="IIALib" />
+		<Option pch_mode="0" />
+		<Option compiler="0" />
 		<Build>
 			<Target title="default">
-				<Option output="\mnt\sv\dev\IIAN\iialib\iialib"/>
-				<Option working_dir="."/>
-				<Option object_output=".objs"/>
-				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
-				<Option type="1"/>
-				<Option compiler="0"/>
-				<Option projectResourceIncludeDirsRelation="1"/>
+				<Option output="/mnt/sv/dev/IIAN/iialib/iialib" />
+				<Option working_dir="/mnt/sv/dev/IIAN/iialib" />
+				<Option type="1" />
+				<Option compiler="0" />
+				<Option includeInTargetAll="1" />
+				<Option projectResourceIncludeDirsRelation="1" />
 			</Target>
 		</Build>
 		<Unit filename="include\exceptions\Exception.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\setup.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\HostEnt.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\InAddr.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\InAddr4.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\InAddr6.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\SockAddr.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\SockAddrIn.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\SockAddrIn6.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\socket\Socket.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\threads\Mutex.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="include\threads\Thread.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\exceptions\Exception.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\socket\HostEnt.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\socket\SockAddr.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\socket\SockAddrIn.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\socket\SockAddrIn6.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\socket\Socket.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\threads\Mutex.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src\threads\Thread.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="test/bafswrong.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\fatest.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\filesend\filesend.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\filesend\filesend.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\filesend\fsprec.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\socktest.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\socktest2.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\socktest3.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\test.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="test\udping\client.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="test\udping\clientg.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="test\udping\clientl.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="test\udping\server.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="test\udping\serverg.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 		<Unit filename="test\xor.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
+			<Option compilerVar="CPP" />
+			<Option target="default" />
 		</Unit>
 	</Project>
-</Code::Blocks_project_file>
+</CodeBlocks_project_file>
