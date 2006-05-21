@@ -1,0 +1,33 @@
+
+
+WCLINE = g++ -c -g3 -I./include -DUNIX -DIIADYNAMIC
+
+obj/linux/Socket.o: include/socket/Socket.hpp include/socket/SockAddr.hpp include/socket/SockAddrIn.hpp include/socket/SockAddrIn6.hpp src/socket/Socket.cpp
+	$(WCLINE) src/socket/Socket.cpp -o obj/linux/Socket.o
+
+obj/linux/HostEnt.o: include/socket/HostEnt.hpp include/socket/SockAddrIn.hpp include/socket/SockAddrIn6.hpp src/socket/HostEnt.cpp
+	$(WCLINE) src/socket/HostEnt.cpp -o obj/linux/HostEnt.o
+
+obj/linux/SockAddr.o: include/socket/SockAddr.hpp src/socket/SockAddr.cpp
+	$(WCLINE) src/socket/SockAddr.cpp -o obj/linux/SockAddr.o
+
+obj/linux/SockAddrIn.o: include/socket/SockAddrIn.hpp src/socket/SockAddrIn.cpp include/socket/SockAddr.hpp
+	$(WCLINE) src/socket/SockAddrIn.cpp -o obj/linux/SockAddrIn.o
+
+obj/linux/SockAddrIn6.o: include/socket/SockAddrIn6.hpp src/socket/SockAddrIn6.cpp include/socket/SockAddr.hpp
+	$(WCLINE) src/socket/SockAddrIn6.cpp -o obj/linux/SockAddrIn6.o
+
+obj/linux/Thread.o: include/threads/Thread.hpp src/threads/Thread.cpp
+	$(WCLINE) src/threads/Thread.cpp -o obj/linux/Thread.o
+
+obj/linux/Mutex.o: include/threads/Mutex.hpp src/threads/Mutex.cpp
+	$(WCLINE) src/threads/Mutex.cpp -o obj/linux/Mutex.o
+
+obj/linux/Exception.o: include/exceptions/Exception.hpp src/exceptions/Exception.cpp
+	$(WCLINE) src/exceptions/Exception.cpp -o obj/linux/Exception.o
+
+
+libiia.so: obj/linux/Socket.o obj/linux/SockAddr.o obj/linux/SockAddrIn.o obj/linux/SockAddrIn6.o obj/linux/HostEnt.o obj/linux/Mutex.o obj/linux/Thread.o obj/linux/Exception.o
+	g++ -g3 -shared obj/linux/Exception.o obj/linux/Socket.o obj/linux/SockAddr.o obj/linux/SockAddrIn.o obj/linux/SockAddrIn6.o obj/linux/HostEnt.o obj/linux/Mutex.o obj/linux/Thread.o -o libiia.so -lpthread
+
+all: libiia.so
